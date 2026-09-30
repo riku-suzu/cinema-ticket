@@ -1,0 +1,1020 @@
+:root {
+  --bg: #f1f1f0;
+  --screen: #000;
+  --surface: #1c1c1e;
+  --surface-2: #2a2a2c;
+  --text: #fff;
+  --muted: #8e8e93;
+  --accent: #ffd23f;
+  --accent-ink: #111;
+  --radius: 22px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+body {
+  background: var(--bg);
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+button:disabled {
+  cursor: default;
+}
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.muted {
+  color: var(--muted);
+}
+
+/* ---------- 端末フレーム ---------- */
+.stage {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+}
+.phone {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  border-radius: 58px;
+  background: var(--screen);
+  color: var(--text);
+  overflow: hidden;
+  box-shadow:
+    0 0 0 10px #1b1b1b,
+    0 0 0 12px #d8d6d0,
+    0 30px 60px rgba(0, 0, 0, 0.25);
+}
+.dynamic-island {
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  width: 124px;
+  height: 36px;
+  translate: -50% 0;
+  border-radius: 20px;
+  background: #000;
+  z-index: 50;
+}
+.status-bar {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 54px;
+  padding: 18px 32px 0 48px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 16px;
+  z-index: 40;
+}
+.status-icons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.home-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  width: 134px;
+  height: 5px;
+  border-radius: 3px;
+  background: #fff;
+  translate: -50% 0;
+  z-index: 60;
+}
+/* スマホで開いたときはフレームなしで全画面 */
+@media (max-width: 480px) {
+  .stage {
+    padding: 0;
+    place-items: stretch;
+  }
+  .phone {
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .dynamic-island,
+  .status-bar,
+  .home-indicator {
+    display: none;
+  }
+}
+
+/* ---------- 画面の共通レイアウト ---------- */
+.screen-host {
+  position: absolute;
+  inset: 0;
+}
+.slide-forward {
+  animation: slide-in-right 0.38s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.slide-back {
+  animation: slide-in-left 0.38s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+}
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+}
+.screen {
+  position: absolute;
+  inset: 0;
+  padding: 112px 24px 0;
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 480px) {
+  .screen {
+    padding-top: 64px;
+  }
+}
+.nav-btn {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+}
+@media (max-width: 480px) {
+  .nav-btn {
+    top: 20px;
+  }
+}
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #cfcfd3;
+}
+.icon-btn:disabled {
+  opacity: 0.5;
+}
+.title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.subtitle {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+.footer {
+  margin-top: auto;
+  padding: 16px 0 46px;
+}
+.primary-btn {
+  width: 100%;
+  height: 52px;
+  border-radius: 26px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+  font-size: 15px;
+  display: grid;
+  place-items: center;
+  transition:
+    transform 0.12s,
+    background 0.25s,
+    color 0.25s;
+}
+.primary-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.primary-btn:disabled {
+  background: #2c2c2e;
+  color: #5a5a5e;
+}
+
+/* ---------- 1. 人数 ---------- */
+.movie-summary {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.movie-thumb {
+  width: 100px;
+  height: 72px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex: none;
+}
+.poster-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.poster-title,
+.movie-logo {
+  font-family: 'Permanent Marker', cursive;
+}
+.movie-logo {
+  color: #cfcfcf;
+  font-size: 17px;
+  line-height: 1;
+  width: 90px;
+  margin-top: 4px;
+}
+.movie-logo span {
+  display: block;
+  font-size: 9px;
+}
+.movie-meta {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+.movie-rating {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 6px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.imdb {
+  background: #f5c518;
+  color: #000;
+  font-weight: 800;
+  font-size: 7px;
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+.divider {
+  height: 8px;
+  margin: 24px -24px 34px;
+  background: linear-gradient(#0e0e0e, #000);
+}
+.guests-stage {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  max-height: 240px;
+}
+.avatar-stack {
+  display: flex;
+  align-items: center;
+}
+.avatar-item {
+  position: relative;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+}
+.pop-in .avatar-item {
+  animation: pop 0.45s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+.pop-in .avatar-item:nth-child(2) {
+  animation-delay: 40ms;
+}
+.pop-in .avatar-item:nth-child(3) {
+  animation-delay: 80ms;
+}
+.pop-in .avatar-item:nth-child(4) {
+  animation-delay: 120ms;
+}
+.pop-in .avatar-item:nth-child(5) {
+  animation-delay: 160ms;
+}
+.pop-in .avatar-item:nth-child(6) {
+  animation-delay: 200ms;
+}
+@keyframes pop {
+  from {
+    transform: scale(0.6) translateY(10px);
+    opacity: 0;
+  }
+}
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  margin-top: 16px;
+}
+.round-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #2c2c2e;
+  font-size: 20px;
+  font-weight: 600;
+  transition:
+    transform 0.12s,
+    opacity 0.2s;
+}
+.round-btn:active:not(:disabled) {
+  transform: scale(0.9);
+}
+.round-btn:disabled {
+  opacity: 0.35;
+}
+.stepper-value {
+  font-size: 30px;
+  font-weight: 700;
+  animation: bump 0.3s ease-out;
+}
+@keyframes bump {
+  from {
+    transform: scale(1.3);
+  }
+}
+
+/* ---------- 2. 座席 ---------- */
+.cinema-screen {
+  position: relative;
+  height: 90px;
+  margin: 28px auto 0;
+  perspective: 300px;
+}
+.cinema-screen svg {
+  width: 100%;
+  height: 60px;
+  display: block;
+  transform: rotateX(-18deg);
+  transform-origin: top;
+}
+.scene-fill {
+  animation: screen-on 1s ease-out both;
+}
+@keyframes screen-on {
+  from {
+    opacity: 0.2;
+    filter: brightness(2);
+  }
+}
+.screen-glow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 36px;
+  height: 60px;
+  background: radial-gradient(ellipse at top, rgba(233, 190, 120, 0.45), transparent 70%);
+  pointer-events: none;
+}
+.seat-grid-wrap {
+  display: flex;
+  justify-content: center;
+}
+.seat-grid {
+  position: relative;
+  display: grid;
+  grid-auto-rows: 26px;
+}
+.seat {
+  width: 26px;
+  height: 26px;
+  padding: 3px 2px;
+  border-radius: 6px;
+  animation: seat-in 0.4s ease-out both;
+  transition:
+    color 0.25s,
+    transform 0.15s;
+}
+@keyframes seat-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.7);
+  }
+}
+.seat.available {
+  color: #d6d6d6;
+}
+.seat.available:hover {
+  color: #fff;
+  transform: translateY(-1px);
+}
+.seat.dim {
+  color: #505052;
+}
+.seat.taken {
+  color: #2e2e30;
+}
+.seat.selected {
+  color: var(--accent);
+  animation: seat-pick 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+@keyframes seat-pick {
+  from {
+    transform: scale(0.6);
+  }
+}
+.seat-tip {
+  position: absolute;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 6px;
+  border-radius: 20px;
+  background: #3a3a3c;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  animation: tip-in 0.3s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+@keyframes tip-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.9);
+  }
+}
+.mode-picker {
+  position: relative;
+  margin-top: 30px;
+  text-align: center;
+}
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 16px;
+  background: #2c2c2e;
+  font-size: 12px;
+  font-weight: 600;
+}
+.menu {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  translate: -50% 0;
+  min-width: 190px;
+  padding: 6px;
+  border-radius: 14px;
+  background: #2c2c2e;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  z-index: 20;
+  animation: tip-in 0.2s ease-out;
+}
+.menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 9px;
+  font-size: 13px;
+}
+.menu button:hover {
+  background: #3a3a3c;
+}
+.menu button.active {
+  color: var(--accent);
+}
+.hint {
+  margin: 10px 0 0;
+  font-size: 10px;
+  color: #636366;
+}
+
+/* ---------- 3. チェックアウト ---------- */
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 14px 40px;
+  background: rgba(0, 0, 0, 0.6);
+  animation: fade 0.25s ease-out;
+}
+.sheet-backdrop.out {
+  animation: fade-out 0.26s ease-in forwards;
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+.sheet {
+  width: 100%;
+  padding: 20px;
+  border-radius: 30px;
+  background: var(--surface);
+  animation: sheet-up 0.42s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+.sheet.out {
+  animation: sheet-down 0.26s ease-in forwards;
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(110%);
+  }
+}
+@keyframes sheet-down {
+  to {
+    transform: translateY(110%);
+  }
+}
+.sheet-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.sheet h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+.booking-row {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin: 26px 0 22px;
+  padding-left: 6px;
+}
+.booking-icon {
+  color: #8e8e93;
+}
+.booking-when {
+  font-weight: 600;
+  font-size: 14px;
+}
+.booking-where {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.sheet-divider {
+  height: 1px;
+  background: #2f2f31;
+  margin: 0 -20px;
+}
+.line-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 16px 6px;
+  font-size: 12px;
+}
+.line-item strong {
+  font-size: 13px;
+}
+.line-value {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+}
+.breakdown {
+  display: block;
+  margin-top: 3px;
+  font-size: 10px;
+}
+.sheet .primary-btn {
+  margin-top: 16px;
+}
+.spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(0, 0, 0, 0.2);
+  border-top-color: #111;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- 4–5. チケット ---------- */
+.ticket-screen {
+  align-items: center;
+}
+.close-ticket {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+.phase-done .close-ticket {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* 回転用の土台。サイズの変化はここで持つ */
+.ticket-spin {
+  position: relative;
+  width: 168px;
+  height: 400px;
+  margin-top: 60px;
+  perspective: 900px;
+  touch-action: none;
+  user-select: none;
+  transition:
+    height 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+    margin 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.phase-done .ticket-spin {
+  width: 184px;
+  height: 320px;
+  margin-top: 16px;
+  cursor: grab;
+}
+.ticket-rotor {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.25, 1.15);
+}
+.ticket-rotor.dragging {
+  transition: none;
+  cursor: grabbing;
+}
+.ticket-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.ticket {
+  --notch: 11px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #121212;
+  /* 左右の切り欠き（半券の境目） */
+  -webkit-mask:
+    radial-gradient(circle var(--notch) at 0 var(--cut), transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--notch) at 100% var(--cut), transparent 98%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle var(--notch) at 0 var(--cut), transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--notch) at 100% var(--cut), transparent 98%, #000) right / 51% 100% no-repeat;
+  --cut: calc(100% - 78px);
+}
+/* 傾きに合わせて動く光沢 */
+.ticket-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.22) 50%, transparent 65%);
+  background-size: 300% 100%;
+  background-position: var(--shine, 50%) 0;
+  opacity: 0;
+  mix-blend-mode: overlay;
+  transition: opacity 0.3s;
+}
+.phase-done .ticket-glare {
+  opacity: 1;
+}
+.ticket-back {
+  transform: rotateY(180deg);
+  border-radius: 14px;
+  overflow: hidden;
+  background:
+    radial-gradient(#262626 1px, transparent 1.2px) 0 0 / 8px 8px,
+    linear-gradient(160deg, #1d1d1f, #0b0b0c);
+  border: 1px solid #2a2a2c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 16px 18px;
+  text-align: center;
+}
+.ticket-back .movie-logo {
+  width: auto;
+  font-size: 20px;
+  color: #f6efe2;
+}
+.back-rows {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.back-rows div {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed #333;
+  padding-bottom: 8px;
+}
+.back-rows b {
+  color: #fff;
+  font-weight: 600;
+}
+.ticket-back .barcode {
+  width: 150px;
+}
+.ticket-back code {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #c7c7cc;
+}
+.ticket-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#2f2f2f 1px, transparent 1.2px);
+  background-size: 8px 8px;
+  border: 1px solid #262626;
+  border-radius: inherit;
+  animation: breathe 1.4s ease-in-out infinite;
+}
+@keyframes breathe {
+  50% {
+    opacity: 0.45;
+  }
+}
+.ticket-print {
+  position: absolute;
+  inset: 0 0 78px;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.1s cubic-bezier(0.6, 0, 0.2, 1);
+}
+.ticket-stub {
+  position: absolute;
+  inset: auto 0 0;
+  height: 78px;
+  background: #242424;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 0.5s 0.6s;
+}
+.barcode {
+  width: 136px;
+  height: 34px;
+}
+.ticket-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 45%, #000 92%);
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+.ticket-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s 0.3s;
+}
+.ticket-title {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.ticket-date {
+  font-size: 11px;
+  color: #b8b8bc;
+  margin-top: 4px;
+}
+.generating-pill {
+  margin-top: 36px;
+  padding: 9px 14px;
+  border-radius: 18px;
+  background: #1f1f21;
+  font-size: 11px;
+  font-weight: 500;
+  transition: opacity 0.3s;
+  animation: fade 0.4s ease-out;
+}
+.generating-pill::after {
+  content: '';
+  animation: dots 1.2s steps(4) infinite;
+}
+@keyframes dots {
+  0% {
+    content: '';
+  }
+  25% {
+    content: '.';
+  }
+  50% {
+    content: '..';
+  }
+  75% {
+    content: '...';
+  }
+}
+
+/* 印刷フェーズ */
+.phase-printed .ticket-print,
+.phase-done .ticket-print {
+  clip-path: inset(0 0 0 0);
+}
+/* 印刷後、手前に寄ってから3Dでゆらっと回って落ち着く（動画 13.7〜16秒の動き） */
+.phase-printed .ticket-spin {
+  animation: ticket-float 1.9s cubic-bezier(0.45, 0, 0.3, 1) 0.9s both;
+}
+@keyframes ticket-float {
+  0% {
+    transform: perspective(800px) scale(1);
+  }
+  22% {
+    transform: perspective(800px) scale(1.07);
+  }
+  48% {
+    transform: perspective(800px) scale(1.04) rotateY(-16deg) rotateZ(-3deg);
+  }
+  74% {
+    transform: perspective(800px) scale(1.02) rotateY(11deg) rotateZ(2deg);
+  }
+  100% {
+    transform: perspective(800px) scale(1);
+  }
+}
+.phase-printed .ticket-stub {
+  opacity: 1;
+}
+.phase-printed .ticket-dots,
+.phase-done .ticket-dots {
+  animation: none;
+  opacity: 0;
+}
+.phase-printed .generating-pill,
+.phase-done .generating-pill {
+  opacity: 0;
+}
+
+/* 完成フェーズ */
+.phase-done .ticket {
+  --cut: 100%;
+}
+.phase-done .ticket-print {
+  inset: 0;
+}
+.phase-done .ticket-fade,
+.phase-done .ticket-info {
+  opacity: 1;
+  transform: none;
+}
+.phase-done .ticket-stub {
+  opacity: 0;
+  transition-delay: 0s;
+}
+.ticket-details,
+.qr-panel {
+  opacity: 0;
+  transform: translateY(24px);
+  pointer-events: none;
+  transition:
+    opacity 0.5s,
+    transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.phase-done .ticket-details {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  transition-delay: 0.35s;
+}
+.phase-done .qr-panel {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  transition-delay: 0.5s;
+}
+.ticket-details {
+  position: absolute;
+  top: 470px;
+  left: 24px;
+  right: 24px;
+}
+@media (max-width: 480px) {
+  .ticket-details {
+    top: auto;
+    bottom: 186px;
+  }
+}
+.ticket-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0 24px;
+}
+.ticket-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  font-size: 10px;
+  color: var(--muted);
+}
+.ticket-stats div + div {
+  border-left: 1px solid #2c2c2e;
+}
+.ticket-stats div:first-child {
+  align-items: flex-start;
+}
+.ticket-stats div:last-child {
+  align-items: flex-end;
+}
+.ticket-stats b {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
+.white-btn {
+  display: block;
+  width: 172px;
+  height: 40px;
+  margin: 22px auto 0;
+  border-radius: 20px;
+  background: #fff;
+  color: #000;
+  font-weight: 700;
+  font-size: 12px;
+}
+.qr-panel {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 30px;
+  padding: 18px;
+  border-radius: 26px;
+  background: #2c2c2e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.qr-panel p {
+  margin: 10px 0 0;
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.booking-id {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 10px;
+  color: #c7c7cc;
+  letter-spacing: 0.08em;
+}
+.qr {
+  padding: 6px;
+  background: #fff;
+  border-radius: 8px;
+  line-height: 0;
+}
+.action-sheet {
+  text-align: center;
+}
+.action-sheet p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 10px 0 20px;
+}
+.danger-btn,
+.ghost-btn {
+  width: 100%;
+  height: 48px;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.danger-btn {
+  background: #3a1d1d;
+  color: #ff6b6b;
+}
+.ghost-btn {
+  margin-top: 8px;
+  background: #2c2c2e;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
