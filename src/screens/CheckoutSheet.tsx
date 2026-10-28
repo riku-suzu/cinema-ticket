@@ -49,7 +49,7 @@ export function CheckoutSheet({ guests, seats, onClose, onPaid }: Props) {
 
         <div className="sheet-divider" />
 
-        <button className="line-item as-button">
+        <button className="line-item">
           <span>Pay With</span>
           <span className="line-value">
             <span className="muted">•••• {card.last4}</span>

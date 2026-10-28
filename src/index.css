@@ -2,12 +2,10 @@
   --bg: #f1f1f0;
   --screen: #000;
   --surface: #1c1c1e;
-  --surface-2: #2a2a2c;
   --text: #fff;
   --muted: #8e8e93;
   --accent: #ffd23f;
   --accent-ink: #111;
-  --radius: 22px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
