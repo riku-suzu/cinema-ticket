@@ -46,8 +46,8 @@ export const SeatIcon = () => (
   </svg>
 )
 
-export const StatusBar = ({ light = true }: { light?: boolean }) => (
-  <div className="status-bar" style={{ color: light ? '#fff' : '#000' }}>
+export const StatusBar = () => (
+  <div className="status-bar">
     <span>9:41</span>
     <span className="status-icons">
       <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor">

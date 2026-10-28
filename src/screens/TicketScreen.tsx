@@ -138,7 +138,7 @@ export function TicketScreen({ seats, bookingId, onClose, onCancelBooking }: Pro
           <div className="ticket-face ticket">
             <div className="ticket-dots" />
             <div className="ticket-print">
-              <PosterArt showTitle />
+              <PosterArt />
               <div className="ticket-fade" />
               <div className="ticket-info">
                 <div className="ticket-title">{movie.title}</div>

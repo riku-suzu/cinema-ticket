@@ -82,7 +82,7 @@ function FaceMarks({ face }: { face: Face }) {
   }
 }
 
-export function Avatar({ index, size = 64 }: { index: number; size?: number }) {
+function Avatar({ index, size = 64 }: { index: number; size?: number }) {
   const c = characters[index % characters.length]
   return (
     <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden>

@@ -1,7 +1,7 @@
 import { movie } from '../data'
 
 // 自作のポスター絵（スーツにサングラスのキツネ）。実際の作品画像に差し替える場合は <img> に置き換える。
-export function PosterArt({ showTitle = true, compact = false }: { showTitle?: boolean; compact?: boolean }) {
+export function PosterArt({ compact = false }: { compact?: boolean }) {
   return (
     <svg className="poster-art" viewBox={compact ? '10 64 140 100' : '0 0 160 220'} preserveAspectRatio="xMidYMid slice" aria-label={movie.title}>
       <defs>
@@ -13,7 +13,7 @@ export function PosterArt({ showTitle = true, compact = false }: { showTitle?: b
       </defs>
       <rect width="160" height="220" fill="url(#bg)" />
       <circle cx="80" cy="212" r="70" fill="#f58b2a" opacity=".55" />
-      {showTitle && !compact && (
+      {!compact && (
         <text x="80" y="32" textAnchor="middle" className="poster-title" fill="#f6efe2">
           <tspan x="80" fontSize="9">the</tspan>
           <tspan x="80" dy="17" fontSize="17">MIDNIGHT</tspan>

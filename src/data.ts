@@ -13,14 +13,14 @@ export const showtime = {
   screen: 2,
 }
 
-export const card = { brand: 'mastercard', last4: '4558' }
+export const card = { last4: '4558' }
 
 export const TICKET_PRICE = 6.5
 export const BOOKING_FEE = 2.49
 export const MIN_GUESTS = 1
 export const MAX_GUESTS = 6
 
-export const ROWS = 8
+const ROWS = 8
 export const COLS = 10
 
 export type SeatState = 'free' | 'taken' | 'none'
