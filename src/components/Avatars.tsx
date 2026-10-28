@@ -95,15 +95,13 @@ function Avatar({ index, size = 64 }: { index: number; size?: number }) {
   )
 }
 
+// 真ん中のキャラクターがいちばん手前、端に行くほど奥になるように重ねる
 export function AvatarStack({ count, size = 64, overlap = 0.12 }: { count: number; size?: number; overlap?: number }) {
+  const center = Math.floor(count / 2)
   return (
     <div className="avatar-stack" style={{ height: size }}>
       {Array.from({ length: count }, (_, i) => (
-        <div
-          key={i}
-          className="avatar-item"
-          style={{ marginLeft: i === 0 ? 0 : -size * overlap, zIndex: i === Math.floor(count / 2) ? 10 : 10 - Math.abs(i - count / 2) }}
-        >
+        <div key={i} className="avatar-item" style={{ marginLeft: i === 0 ? 0 : -size * overlap, zIndex: 10 - Math.abs(i - center) }}>
           <Avatar index={i} size={size} />
         </div>
       ))}
