@@ -1,34 +1,17 @@
 import { AvatarStack } from '../components/Avatars'
 import { BackIcon } from '../components/Icons'
-import { PosterArt } from '../components/Poster'
-import { MAX_GUESTS, MIN_GUESTS, movie } from '../data'
+import { MovieSummary } from '../components/MovieSummary'
+import { MAX_GUESTS, MIN_GUESTS } from '../data'
 
 type Props = { guests: number; onChange: (n: number) => void; onContinue: () => void }
 
-export function MovieSummary() {
-  return (
-    <div className="movie-summary">
-      <div className="movie-thumb">
-        <PosterArt compact />
-      </div>
-      <div>
-        <div className="movie-logo">
-          <span>the</span>MIDNIGHT HEIST
-        </div>
-        <div className="movie-meta">
-          {movie.year} · {movie.genre} · {movie.runtime} min
-        </div>
-        <div className="movie-rating">
-          <span className="imdb">IMDb</span> {movie.rating}
-        </div>
-      </div>
-    </div>
-  )
-}
+// 5人以上は横幅に収まるようキャラクターを小さくする
+const avatarSize = (guests: number) => (guests > 4 ? 60 : 76)
 
 export function GuestsScreen({ guests, onChange, onContinue }: Props) {
   return (
     <div className="screen">
+      {/* 最初の画面なので戻る先はない（他の画面と見た目をそろえるために置いている） */}
       <button className="icon-btn nav-btn" aria-label="戻る" disabled>
         <BackIcon />
       </button>
@@ -40,7 +23,7 @@ export function GuestsScreen({ guests, onChange, onContinue }: Props) {
       <div className="guests-stage">
         {/* key を変えて人数が変わるたびにポップインのアニメーションを再生 */}
         <div key={guests} className="pop-in">
-          <AvatarStack count={guests} size={guests > 4 ? 60 : 76} />
+          <AvatarStack count={guests} size={avatarSize(guests)} />
         </div>
       </div>
 
