@@ -1,0 +1,158 @@
+/* ---------- スクリーン ---------- */
+.cinema-screen {
+  position: relative;
+  height: 90px;
+  margin: 28px auto 0;
+  perspective: 300px;
+}
+.cinema-screen svg {
+  width: 100%;
+  height: 60px;
+  display: block;
+  transform: rotateX(-18deg);
+  transform-origin: top;
+}
+.scene-fill {
+  animation: screen-on 1s ease-out both;
+}
+@keyframes screen-on {
+  from {
+    opacity: 0.2;
+    filter: brightness(2);
+  }
+}
+.screen-glow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 36px;
+  height: 60px;
+  background: radial-gradient(ellipse at top, rgba(233, 190, 120, 0.45), transparent 70%);
+  pointer-events: none;
+}
+
+/* ---------- 座席 ---------- */
+.seat-grid-wrap {
+  display: flex;
+  justify-content: center;
+}
+/* --seat-size は SeatsScreen.tsx の CELL から渡す */
+.seat-grid {
+  position: relative;
+  display: grid;
+  grid-auto-rows: var(--seat-size);
+}
+.seat {
+  width: var(--seat-size);
+  height: var(--seat-size);
+  padding: 3px 2px;
+  border-radius: 6px;
+  animation: seat-in 0.4s ease-out both;
+  transition:
+    color 0.25s,
+    transform 0.15s;
+}
+@keyframes seat-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.7);
+  }
+}
+.seat.available {
+  color: #d6d6d6;
+}
+.seat.available:hover {
+  color: #fff;
+  transform: translateY(-1px);
+}
+/* 空いているが、並び席モードで人数分並んでいない席 */
+.seat.dim {
+  color: #505052;
+}
+.seat.taken {
+  color: #2e2e30;
+}
+.seat.selected {
+  color: var(--accent);
+  animation: seat-pick 0.35s var(--ease-bounce);
+}
+@keyframes seat-pick {
+  from {
+    transform: scale(0.6);
+  }
+}
+
+/* 選んだ席の上に出す吹き出し */
+.seat-tip {
+  position: absolute;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 6px;
+  border-radius: 20px;
+  background: var(--fill-strong);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  animation: tip-in 0.3s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+@keyframes tip-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.9);
+  }
+}
+
+/* ---------- 並び席／ばらばらの切り替え ---------- */
+.mode-picker {
+  position: relative;
+  margin-top: 30px;
+  text-align: center;
+}
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 16px;
+  background: var(--fill);
+  font-size: 12px;
+  font-weight: 600;
+}
+.menu {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  translate: -50% 0;
+  min-width: 190px;
+  padding: 6px;
+  border-radius: 14px;
+  background: var(--fill);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  z-index: 20;
+  animation: tip-in 0.2s ease-out;
+}
+.menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 9px;
+  font-size: 13px;
+}
+.menu button:hover {
+  background: var(--fill-strong);
+}
+.menu button.active {
+  color: var(--accent);
+}
+.hint {
+  margin: 10px 0 0;
+  font-size: 10px;
+  color: #636366;
+}

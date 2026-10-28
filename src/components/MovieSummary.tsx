@@ -1,6 +1,7 @@
 import { movie } from '../data'
 import { MovieLogo } from './MovieLogo'
 import { PosterArt } from './Poster'
+import './MovieSummary.css'
 
 // サムネイル・ロゴ・作品情報を横に並べたもの（人数選択とチェックアウトで使う）
 export function MovieSummary() {

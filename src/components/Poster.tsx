@@ -1,4 +1,5 @@
 import { movie } from '../data'
+import './Poster.css'
 
 // 自作のポスター絵（スーツにサングラスのキツネ）。実際の作品画像に差し替える場合は <img> に置き換える。
 export function PosterArt({ compact = false }: { compact?: boolean }) {

@@ -5,6 +5,7 @@ import { MovieSummary } from '../components/MovieSummary'
 import { BOOKING_FEE, card, orderTotal, showtime, TICKET_PRICE } from '../data'
 import { money } from '../format'
 import { formatSeats, type Seat } from '../seats'
+import './CheckoutSheet.css'
 
 type Props = { guests: number; seats: Seat[]; onClose: () => void; onPaid: () => void }
 

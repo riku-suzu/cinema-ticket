@@ -1,6 +1,7 @@
 import { BottomSheet } from '../components/BottomSheet'
 import { movie, showtime } from '../data'
 import type { SeatLabel } from '../seats'
+import './ManageRsvpSheet.css'
 
 type Props = { label: SeatLabel | null; onCancelBooking: () => void; onClose: () => void }
 

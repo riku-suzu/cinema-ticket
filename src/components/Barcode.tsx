@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import './Barcode.css'
 
 const WIDTH = 136
 const HEIGHT = 30

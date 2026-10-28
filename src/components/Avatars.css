@@ -1,0 +1,8 @@
+.avatar-stack {
+  display: flex;
+  align-items: center;
+}
+.avatar-item {
+  position: relative;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+}

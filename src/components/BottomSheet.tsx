@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import './BottomSheet.css'
 
 type Props = {
   label: string

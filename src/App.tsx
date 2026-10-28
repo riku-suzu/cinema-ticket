@@ -5,6 +5,7 @@ import { GuestsScreen } from './screens/GuestsScreen'
 import { SeatsScreen } from './screens/SeatsScreen'
 import { TicketScreen } from './screens/TicketScreen'
 import { buildSeatMap, markTaken, type Seat, type SeatMode } from './seats'
+import './App.css'
 
 // 画面は 人数 → 席 →（支払いシート）→ チケット の順に進む
 type Step = 'guests' | 'seats' | 'ticket'

@@ -1,0 +1,46 @@
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 14px 40px;
+  background: rgba(0, 0, 0, 0.6);
+  animation: fade 0.25s ease-out;
+}
+.sheet {
+  width: 100%;
+  padding: 20px;
+  border-radius: 30px;
+  background: var(--surface);
+  animation: sheet-up 0.42s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+.sheet h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* 閉じるとき（.out）。長さは CheckoutSheet.tsx の CLOSE_ANIMATION_MS と合わせる */
+.sheet-backdrop.out {
+  animation: fade-out 0.26s ease-in forwards;
+}
+.sheet.out {
+  animation: sheet-down 0.26s ease-in forwards;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(110%);
+  }
+}
+@keyframes sheet-down {
+  to {
+    transform: translateY(110%);
+  }
+}

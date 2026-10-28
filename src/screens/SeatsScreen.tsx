@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type CSSProperties } from 'react'
 import { AvatarStack } from '../components/Avatars'
 import { BackIcon, ChevronDown, SeatIcon } from '../components/Icons'
 import { blockAround, COLS, formatSeats, seatKey, selectableSeats, toggleSeat, type Seat, type SeatMap, type SeatMode } from '../seats'
+import './SeatsScreen.css'
 
 type Props = {
   map: SeatMap
@@ -75,7 +76,7 @@ export function SeatsScreen({ map, guests, mode, selected, onModeChange, onSelec
       <div className="seat-grid-wrap">
         <div
           className="seat-grid"
-          style={{ gridTemplateColumns: `repeat(${COLS}, ${CELL}px)`, columnGap: GAP_X, rowGap: GAP_Y }}
+          style={{ gridTemplateColumns: `repeat(${COLS}, ${CELL}px)`, columnGap: GAP_X, rowGap: GAP_Y, '--seat-size': `${CELL}px` } as CSSProperties}
         >
           {map.map((row, r) =>
             row.map((state, c) => {

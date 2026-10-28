@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import './PhoneFrame.css'
 
 // 端末上部のステータスバー（飾り）
 const StatusBar = () => (

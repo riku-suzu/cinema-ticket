@@ -9,6 +9,7 @@ import { movie, showtime } from '../data'
 import { useTicketSpin } from '../hooks/useTicketSpin'
 import { formatSeats, type Seat } from '../seats'
 import { ManageRsvpSheet } from './ManageRsvpSheet'
+import './TicketScreen.css'
 
 /** building: 枠だけ / printed: 印刷された / done: 完成して詳細も表示 */
 type Phase = 'building' | 'printed' | 'done'

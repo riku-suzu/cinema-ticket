@@ -2,6 +2,7 @@ import { AvatarStack } from '../components/Avatars'
 import { BackIcon } from '../components/Icons'
 import { MovieSummary } from '../components/MovieSummary'
 import { MAX_GUESTS, MIN_GUESTS } from '../data'
+import './GuestsScreen.css'
 
 type Props = { guests: number; onChange: (n: number) => void; onContinue: () => void }
 

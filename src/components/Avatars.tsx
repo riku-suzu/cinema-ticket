@@ -1,5 +1,7 @@
 // 人数ぶん並ぶキャラクター。形・色・表情の組み合わせで6体。
 
+import './Avatars.css'
+
 type Face = 'wink' | 'tongue' | 'glasses' | 'smile' | 'surprised' | 'sleepy'
 
 const characters: { color: string; shade: string; shape: string; face: Face }[] = [

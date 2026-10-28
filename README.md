@@ -42,4 +42,6 @@ npx vercel deploy --prod
 - `src/seats.ts` — 座席配置と席選びのロジック
 - `src/App.tsx` — 画面遷移と状態管理
 - `src/screens/` — 各画面
-- `src/index.css` — 見た目とアニメーション
+- `src/components/` — 複数の画面で使う部品（端末フレーム、ポスター、キャラクター、下から出るシートなど）
+- `src/hooks/` — チケットをドラッグで回す処理
+- `src/index.css` — 色・動きの変数と共通のスタイル。画面・部品ごとの見た目とアニメーションは各 `.tsx` の隣の `.css`
