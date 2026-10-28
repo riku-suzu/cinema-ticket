@@ -1,0 +1,23 @@
+/* 画面の切り替え。進むときは右から、戻るときは左から入ってくる */
+.screen-host {
+  position: absolute;
+  inset: 0;
+}
+.slide-forward {
+  animation: slide-in-right 0.38s var(--ease-smooth);
+}
+.slide-back {
+  animation: slide-in-left 0.38s var(--ease-smooth);
+}
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+}
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+}

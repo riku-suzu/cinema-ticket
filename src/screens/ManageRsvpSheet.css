@@ -1,0 +1,24 @@
+.action-sheet {
+  text-align: center;
+}
+.action-sheet p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 10px 0 20px;
+}
+.danger-btn,
+.ghost-btn {
+  width: 100%;
+  height: 48px;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.danger-btn {
+  background: #3a1d1d;
+  color: #ff6b6b;
+}
+.ghost-btn {
+  margin-top: 8px;
+  background: var(--fill);
+}

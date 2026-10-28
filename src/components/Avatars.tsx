@@ -1,5 +1,7 @@
 // 人数ぶん並ぶキャラクター。形・色・表情の組み合わせで6体。
 
+import './Avatars.css'
+
 type Face = 'wink' | 'tongue' | 'glasses' | 'smile' | 'surprised' | 'sleepy'
 
 const characters: { color: string; shade: string; shape: string; face: Face }[] = [
@@ -82,7 +84,7 @@ function FaceMarks({ face }: { face: Face }) {
   }
 }
 
-export function Avatar({ index, size = 64 }: { index: number; size?: number }) {
+function Avatar({ index, size = 64 }: { index: number; size?: number }) {
   const c = characters[index % characters.length]
   return (
     <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden>
@@ -93,15 +95,13 @@ export function Avatar({ index, size = 64 }: { index: number; size?: number }) {
   )
 }
 
+// 真ん中のキャラクターがいちばん手前、端に行くほど奥になるように重ねる
 export function AvatarStack({ count, size = 64, overlap = 0.12 }: { count: number; size?: number; overlap?: number }) {
+  const center = Math.floor(count / 2)
   return (
     <div className="avatar-stack" style={{ height: size }}>
       {Array.from({ length: count }, (_, i) => (
-        <div
-          key={i}
-          className="avatar-item"
-          style={{ marginLeft: i === 0 ? 0 : -size * overlap, zIndex: i === Math.floor(count / 2) ? 10 : 10 - Math.abs(i - count / 2) }}
-        >
+        <div key={i} className="avatar-item" style={{ marginLeft: i === 0 ? 0 : -size * overlap, zIndex: 10 - Math.abs(i - center) }}>
           <Avatar index={i} size={size} />
         </div>
       ))}

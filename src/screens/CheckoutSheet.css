@@ -1,0 +1,68 @@
+.sheet-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.booking-row {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin: 26px 0 22px;
+  padding-left: 6px;
+}
+.booking-icon {
+  color: var(--muted);
+}
+.booking-when {
+  font-weight: 600;
+  font-size: 14px;
+}
+.booking-where {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.sheet-divider {
+  height: 1px;
+  background: #2f2f31;
+  margin: 0 -20px;
+}
+.line-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 16px 6px;
+  font-size: 12px;
+}
+.line-item strong {
+  font-size: 13px;
+}
+.line-value {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+}
+.breakdown {
+  display: block;
+  margin-top: 3px;
+  font-size: 10px;
+}
+.sheet .primary-btn {
+  margin-top: 16px;
+}
+.spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(0, 0, 0, 0.2);
+  border-top-color: var(--accent-ink);
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
