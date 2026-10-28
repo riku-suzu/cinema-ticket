@@ -14,12 +14,33 @@ type Props = {
   onContinue: () => void
 }
 
+// 座席グリッドの寸法（px）
 const CELL = 26
 const GAP_X = 7
 const GAP_Y = 10
+const GRID_WIDTH = COLS * CELL + (COLS - 1) * GAP_X
+const SCREEN_OVERHANG = 16 // スクリーンは座席の列より少しだけ広くする
+const TIP_OFFSET_Y = 34 // 吹き出しを選んだ席の上に出す距離
+
+// 席が前の列から順に、中央から外側へ出てくるアニメーションの遅れ
+const ROW_DELAY_MS = 45
+const COL_DELAY_MS = 15
+
+// 選んだ席の上に出す吹き出しの位置（いちばん前の列の、選んだ席の中央）
+function tipPosition(selected: Seat[]) {
+  const topRow = Math.min(...selected.map((s) => s.row))
+  const inRow = selected.filter((s) => s.row === topRow).map((s) => s.col)
+  const center = (Math.min(...inRow) + Math.max(...inRow) + 1) / 2
+  return { left: center * CELL + (center - 0.5) * GAP_X, top: topRow * (CELL + GAP_Y) - TIP_OFFSET_Y }
+}
+
+function hintText(together: boolean, hasTogetherSeats: boolean, remaining: number) {
+  if (together) return hasTogetherSeats ? 'Showing where you can sit together' : 'No seats together — try separate seats'
+  if (remaining === 0) return 'All seats picked'
+  return `Pick ${remaining} more seat${remaining === 1 ? '' : 's'}`
+}
 
 export function SeatsScreen({ map, guests, mode, selected, onModeChange, onSelect, onBack, onContinue }: Props) {
-  const [menuOpen, setMenuOpen] = useState(false)
   const together = mode === 'together' && guests > 1
 
   // 並び席モードでは「n席並びで座れる席」だけを明るく表示する
@@ -38,17 +59,8 @@ export function SeatsScreen({ map, guests, mode, selected, onModeChange, onSelec
     }
   }
 
-  // 選択した席の上に出すラベルの位置
   const label = formatSeats(selected)
-  const tip = useMemo(() => {
-    if (!selected.length) return null
-    const topRow = Math.min(...selected.map((s) => s.row))
-    const inRow = selected.filter((s) => s.row === topRow).map((s) => s.col)
-    const center = (Math.min(...inRow) + Math.max(...inRow) + 1) / 2
-    return { left: center * CELL + (center - 0.5) * GAP_X, top: topRow * (CELL + GAP_Y) - 34 }
-  }, [selected])
-
-  const gridWidth = COLS * CELL + (COLS - 1) * GAP_X
+  const tip = useMemo(() => (selected.length ? tipPosition(selected) : null), [selected])
 
   return (
     <div className="screen">
@@ -58,20 +70,7 @@ export function SeatsScreen({ map, guests, mode, selected, onModeChange, onSelec
       <h1 className="title">Where to Sit?</h1>
       <p className="subtitle">Select Seats</p>
 
-      <div className="cinema-screen" style={{ width: gridWidth + 16 }}>
-        <svg viewBox="0 0 340 60" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="scene" x1="0" x2="1">
-              <stop offset="0" stopColor="#6b4e2e" />
-              <stop offset=".35" stopColor="#e9cf9f" />
-              <stop offset=".6" stopColor="#f7e7c4" />
-              <stop offset="1" stopColor="#7a5a34" />
-            </linearGradient>
-          </defs>
-          <path d="M0 4 Q170 -8 340 4 L334 44 Q170 30 6 44Z" fill="url(#scene)" className="scene-fill" />
-        </svg>
-        <div className="screen-glow" />
-      </div>
+      <CinemaScreen width={GRID_WIDTH + SCREEN_OVERHANG} />
 
       <div className="seat-grid-wrap">
         <div
@@ -89,7 +88,7 @@ export function SeatsScreen({ map, guests, mode, selected, onModeChange, onSelec
                 <button
                   key={k}
                   className={cls}
-                  style={{ animationDelay: `${r * 45 + Math.abs(c - COLS / 2) * 15}ms` }}
+                  style={{ animationDelay: `${r * ROW_DELAY_MS + Math.abs(c - COLS / 2) * COL_DELAY_MS}ms` }}
                   onClick={() => handleSeat({ row: r, col: c })}
                   disabled={!isAvail}
                   aria-label={`Row ${r + 1} Seat ${c + 1}${state === 'taken' ? '（予約済み）' : ''}`}
@@ -112,45 +111,83 @@ export function SeatsScreen({ map, guests, mode, selected, onModeChange, onSelec
         </div>
       </div>
 
-      <div className="mode-picker">
-        <button className="pill-btn" onClick={() => setMenuOpen((v) => !v)} aria-expanded={menuOpen} disabled={guests === 1}>
-          {together ? `${guests} Seats Together` : guests === 1 ? '1 Seat' : 'Separate Seats'}
-          {guests > 1 && <ChevronDown />}
-        </button>
-        {menuOpen && (
-          <div className="menu" role="menu">
-            {(['together', 'separate'] as const).map((m) => (
-              <button
-                key={m}
-                role="menuitemradio"
-                aria-checked={mode === m}
-                className={mode === m ? 'active' : ''}
-                onClick={() => {
-                  onModeChange(m)
-                  setMenuOpen(false)
-                }}
-              >
-                {m === 'together' ? `${guests} Seats Together` : 'Separate Seats'}
-              </button>
-            ))}
-          </div>
-        )}
-        <p className="hint">
-          {together
-            ? available.size
-              ? 'Showing where you can sit together'
-              : 'No seats together — try separate seats'
-            : complete
-              ? 'All seats picked'
-              : `Pick ${guests - selected.length} more seat${guests - selected.length === 1 ? '' : 's'}`}
-        </p>
-      </div>
+      <ModePicker
+        guests={guests}
+        mode={mode}
+        together={together}
+        onChange={onModeChange}
+        hint={hintText(together, available.size > 0, guests - selected.length)}
+      />
 
       <div className="footer">
         <button className="primary-btn" onClick={onContinue} disabled={!complete}>
           Continue
         </button>
       </div>
+    </div>
+  )
+}
+
+// 座席の前にある、奥に傾いたスクリーン
+function CinemaScreen({ width }: { width: number }) {
+  return (
+    <div className="cinema-screen" style={{ width }}>
+      <svg viewBox="0 0 340 60" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="scene" x1="0" x2="1">
+            <stop offset="0" stopColor="#6b4e2e" />
+            <stop offset=".35" stopColor="#e9cf9f" />
+            <stop offset=".6" stopColor="#f7e7c4" />
+            <stop offset="1" stopColor="#7a5a34" />
+          </linearGradient>
+        </defs>
+        <path d="M0 4 Q170 -8 340 4 L334 44 Q170 30 6 44Z" fill="url(#scene)" className="scene-fill" />
+      </svg>
+      <div className="screen-glow" />
+    </div>
+  )
+}
+
+const modeLabel = (m: SeatMode, guests: number) => (m === 'together' ? `${guests} Seats Together` : 'Separate Seats')
+
+type ModePickerProps = {
+  guests: number
+  mode: SeatMode
+  together: boolean
+  onChange: (m: SeatMode) => void
+  hint: string
+}
+
+// 「並び席 / ばらばら」の切り替えメニューとヒント
+function ModePicker({ guests, mode, together, onChange, hint }: ModePickerProps) {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const single = guests === 1
+
+  return (
+    <div className="mode-picker">
+      <button className="pill-btn" onClick={() => setMenuOpen((v) => !v)} aria-expanded={menuOpen} disabled={single}>
+        {single ? '1 Seat' : modeLabel(together ? 'together' : 'separate', guests)}
+        {!single && <ChevronDown />}
+      </button>
+      {menuOpen && (
+        <div className="menu" role="menu">
+          {(['together', 'separate'] as const).map((m) => (
+            <button
+              key={m}
+              role="menuitemradio"
+              aria-checked={mode === m}
+              className={mode === m ? 'active' : ''}
+              onClick={() => {
+                onChange(m)
+                setMenuOpen(false)
+              }}
+            >
+              {modeLabel(m, guests)}
+            </button>
+          ))}
+        </div>
+      )}
+      <p className="hint">{hint}</p>
     </div>
   )
 }
