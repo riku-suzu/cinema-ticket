@@ -1,12 +1,10 @@
 import { useMemo, useState } from 'react'
 import { AvatarStack } from '../components/Avatars'
 import { BackIcon, ChevronDown, SeatIcon } from '../components/Icons'
-import { blockAround, COLS, formatSeats, togetherStarts, type Seat, type SeatState } from '../data'
-
-export type SeatMode = 'together' | 'separate'
+import { blockAround, COLS, formatSeats, seatKey, selectableSeats, toggleSeat, type Seat, type SeatMap, type SeatMode } from '../seats'
 
 type Props = {
-  map: SeatState[][]
+  map: SeatMap
   guests: number
   mode: SeatMode
   selected: Seat[]
@@ -20,40 +18,23 @@ const CELL = 26
 const GAP_X = 7
 const GAP_Y = 10
 
-const key = (s: Seat) => `${s.row}-${s.col}`
-
 export function SeatsScreen({ map, guests, mode, selected, onModeChange, onSelect, onBack, onContinue }: Props) {
   const [menuOpen, setMenuOpen] = useState(false)
   const together = mode === 'together' && guests > 1
 
   // 並び席モードでは「n席並びで座れる席」だけを明るく表示する
-  const available = useMemo(() => {
-    const set = new Set<string>()
-    if (!together) {
-      map.forEach((row, r) => row.forEach((s, c) => s === 'free' && set.add(`${r}-${c}`)))
-      return set
-    }
-    for (const st of togetherStarts(map, guests)) {
-      for (let i = 0; i < guests; i++) set.add(`${st.row}-${st.col + i}`)
-    }
-    return set
-  }, [map, guests, together])
+  const available = useMemo(() => selectableSeats(map, guests, together), [map, guests, together])
 
-  const selectedKeys = new Set(selected.map(key))
+  const selectedKeys = new Set(selected.map(seatKey))
   const complete = selected.length === guests
 
   function handleSeat(seat: Seat) {
-    if (!available.has(key(seat))) return
+    if (!available.has(seatKey(seat))) return
     if (together) {
       const block = blockAround(map, guests, seat)
       if (block) onSelect(block)
-      return
-    }
-    if (selectedKeys.has(key(seat))) {
-      onSelect(selected.filter((s) => key(s) !== key(seat)))
     } else {
-      // 上限に達していたら一番古い選択を外す
-      onSelect([...selected, seat].slice(-guests))
+      onSelect(toggleSeat(selected, seat, guests))
     }
   }
 
@@ -99,7 +80,7 @@ export function SeatsScreen({ map, guests, mode, selected, onModeChange, onSelec
         >
           {map.map((row, r) =>
             row.map((state, c) => {
-              const k = `${r}-${c}`
+              const k = seatKey({ row: r, col: c })
               if (state === 'none') return <span key={k} />
               const isSel = selectedKeys.has(k)
               const isAvail = available.has(k)
@@ -121,7 +102,7 @@ export function SeatsScreen({ map, guests, mode, selected, onModeChange, onSelec
           )}
 
           {tip && label && (
-            <div key={key(selected[0])} className="seat-tip" style={{ left: tip.left, top: tip.top }}>
+            <div key={seatKey(selected[0])} className="seat-tip" style={{ left: tip.left, top: tip.top }}>
               <AvatarStack count={selected.length} size={16} overlap={0.2} />
               <span>
                 Row {label.row} · {selected.length} {selected.length === 1 ? 'Seat' : 'Seats'}

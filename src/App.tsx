@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { StatusBar } from './components/Icons'
-import { buildSeatMap, type Seat } from './data'
 import { CheckoutSheet } from './screens/CheckoutSheet'
 import { GuestsScreen } from './screens/GuestsScreen'
-import { SeatsScreen, type SeatMode } from './screens/SeatsScreen'
+import { SeatsScreen } from './screens/SeatsScreen'
 import { TicketScreen } from './screens/TicketScreen'
+import { buildSeatMap, markTaken, type Seat, type SeatMode } from './seats'
 
 type Step = 'guests' | 'seats' | 'ticket'
 
@@ -28,7 +28,7 @@ export default function App() {
   // keepBooking: 予約済みの席を埋まった席として残す（キャンセル時は残さない）
   const reset = (keepBooking: boolean) => {
     if (keepBooking) {
-      setSeatMap((m) => m.map((row, r) => row.map((s, c) => (seats.some((x) => x.row === r && x.col === c) ? 'taken' : s))))
+      setSeatMap((m) => markTaken(m, seats))
     }
     setSeats([])
     setCheckout(false)

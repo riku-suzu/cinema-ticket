@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { ChevronRight, CloseIcon, Mastercard, TicketIcon } from '../components/Icons'
-import { BOOKING_FEE, card, formatSeats, money, showtime, TICKET_PRICE, type Seat } from '../data'
+import { BOOKING_FEE, card, orderTotal, showtime, TICKET_PRICE } from '../data'
+import { money } from '../format'
+import { formatSeats, type Seat } from '../seats'
 import { MovieSummary } from './GuestsScreen'
 
 type Props = { guests: number; seats: Seat[]; onClose: () => void; onPaid: () => void }
@@ -9,7 +11,7 @@ export function CheckoutSheet({ guests, seats, onClose, onPaid }: Props) {
   const [closing, setClosing] = useState(false)
   const [paying, setPaying] = useState(false)
   const label = formatSeats(seats)
-  const total = TICKET_PRICE * guests + BOOKING_FEE
+  const total = orderTotal(guests)
 
   function close() {
     if (paying) return

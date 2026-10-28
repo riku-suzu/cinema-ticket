@@ -2,7 +2,8 @@ import { QRCodeSVG } from 'qrcode.react'
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from 'react'
 import { CloseIcon, PhoneIcon } from '../components/Icons'
 import { PosterArt } from '../components/Poster'
-import { formatSeats, movie, showtime, type Seat } from '../data'
+import { movie, showtime } from '../data'
+import { formatSeats, type Seat } from '../seats'
 
 type Phase = 'building' | 'printed' | 'done'
 type Props = { seats: Seat[]; bookingId: string; onClose: () => void; onCancelBooking: () => void }
@@ -159,11 +160,11 @@ export function TicketScreen({ seats, bookingId, onClose, onCancelBooking }: Pro
             <div className="back-rows">
               <div>
                 <span>Date</span>
-                <b>{showtime.label.split(' at ')[0]}</b>
+                <b>{showtime.date}</b>
               </div>
               <div>
                 <span>Time</span>
-                <b>{showtime.label.split(' at ')[1]}</b>
+                <b>{showtime.time}</b>
               </div>
               <div>
                 <span>Screen</span>

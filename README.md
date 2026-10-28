@@ -38,7 +38,8 @@ npx vercel deploy --prod
 
 ## ファイル構成
 
-- `src/data.ts` — 映画情報・料金・座席配置と座席のロジック（実データに差し替えるときはここ）
+- `src/data.ts` — 映画情報・上映回・料金（実データに差し替えるときはここ）
+- `src/seats.ts` — 座席配置と席選びのロジック
 - `src/App.tsx` — 画面遷移と状態管理
 - `src/screens/` — 各画面
 - `src/index.css` — 見た目とアニメーション
